@@ -13,6 +13,7 @@ const app: Application = express();
 app.use(helmet());
 const allowedOrigins = [
   'https://unotech-nachiya-frontend.vercel.app',
+  'https://unotech-nachiya-backend.onrender.com',
   'http://localhost:5173',
   'http://localhost:3000',
 ];
