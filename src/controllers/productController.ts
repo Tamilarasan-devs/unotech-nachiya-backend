@@ -59,16 +59,15 @@ export const deleteProduct = async (req: Request, res: Response) => {
 // @access  Private/Admin
 export const createProduct = async (req: AuthRequest, res: Response) => {
   try {
-    const { name, price, description, images, category, quantity } = req.body;
+    const { name, description, images, category, variants } = req.body;
 
     const product = new Product({
       name: name || 'Sample name',
-      price: price || 0,
       user: req.user._id,
       images: images || [],
       category: category || 'Sample category',
-      quantity: quantity || 0,
       description: description || 'Sample description',
+      variants: variants || [],
     });
 
     const createdProduct = await product.save();
@@ -84,17 +83,18 @@ export const createProduct = async (req: AuthRequest, res: Response) => {
 // @access  Private/Admin
 export const updateProduct = async (req: Request, res: Response) => {
   try {
-    const { name, price, description, images, category, quantity } = req.body;
+    const { name, description, images, category, variants } = req.body;
 
     const product = await Product.findById(req.params.id);
 
     if (product) {
       product.name = name || product.name;
-      product.price = price || product.price;
       product.description = description || product.description;
       product.images = images || product.images;
       product.category = category || product.category;
-      product.quantity = quantity || product.quantity;
+      if (variants) {
+        product.variants = variants;
+      }
 
       const updatedProduct = await product.save();
       res.json(updatedProduct);

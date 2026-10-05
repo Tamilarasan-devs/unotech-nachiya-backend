@@ -1,5 +1,11 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
+export interface IProductVariant {
+  weight: string;
+  price: number;
+  quantity: number;
+}
+
 export interface IProduct extends Document {
   user: mongoose.Schema.Types.ObjectId;
   name: string;
@@ -8,7 +14,14 @@ export interface IProduct extends Document {
   price: number;
   description: string;
   images: string[];
+  variants: IProductVariant[];
 }
+
+const variantSchema = new Schema({
+  weight: { type: String, required: true },
+  price: { type: Number, required: true },
+  quantity: { type: Number, required: true, default: 0 },
+});
 
 const productSchema: Schema = new Schema(
   {
@@ -44,6 +57,7 @@ const productSchema: Schema = new Schema(
       required: true,
       default: [],
     },
+    variants: [variantSchema],
   },
   {
     timestamps: true,
